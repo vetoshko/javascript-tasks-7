@@ -48,18 +48,8 @@ var methods = {
     checkContainsValues: function (values) {
         if (Object.getPrototypeOf(this) === Array.prototype ||
         Object.getPrototypeOf(this) === Object.prototype) {
-            var objectKeys = Object.keys(this);
-            // var objectValues = objectKeys.filter(function () {
-            //     for (var item = 0; item < objectKeys.length; item++) {
-            //         return this[objectKeys[item]];
-            //     }
-            // });
-            var objectValues = [];
-            for (var item = 0; item < objectKeys.length; item++) {
-                objectValues.push(this[objectKeys[item]]);
-            };
-            for (var item = 0; item < values.length; item++) {
-                if (objectValues.indexOf([values[item]]) < 0) {
+            for (var index = 0; index < values.length; index++) {
+                if (this.indexOf(values[index]) === -1) {
                     return false;
                 }
             }
@@ -67,7 +57,7 @@ var methods = {
         }
     },
 
-    checkHasValues: function(values) {
+    checkHasValues: function (values) {
         if (Object.getPrototypeOf(this) === Array.prototype ||
         Object.getPrototypeOf(this) === Object.prototype) {
             var objectKeys = Object.keys(this);
