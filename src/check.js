@@ -1,6 +1,7 @@
 'use strict';
 
 exports.init = function () {
+    // Я не знаю, почему это не работает
     // var keys = Object.keys(methods);
     // console.log(keys);
     // for (var index = 0; index < keys.length; index++) {
