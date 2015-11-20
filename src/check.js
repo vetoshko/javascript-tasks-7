@@ -1,28 +1,29 @@
 'use strict';
 
 exports.init = function () {
-    // Я не знаю, почему это не работает
-    // var keys = Object.keys(methods);
-    // console.log(keys);
-    // for (var index = 0; index < keys.length; index++) {
-    //     console.log(keys[index]);
-    //     Object.prototype.keys[index] = methods[keys[index]];
-    // }
-    Object.prototype.checkContainsKeys = methods.checkContainsKeys;
-    Object.prototype.checkHasKeys = methods.checkHasKeys;
-    Object.prototype.checkContainsValues = methods.checkContainsValues;
-    Object.prototype.checkHasValues = methods.checkHasValues;
-    Object.prototype.checkHasValueType = methods.checkHasValueType;
-    Object.prototype.checkHasLength = methods.checkHasLength;
-    Object.prototype.checkHasParamsCount = methods.checkHasParamsCount;
-    Object.prototype.checkHasWordsCount = methods.checkHasWordsCount;
-
+    var keys = Object.keys(methods);
+    for (var index = 0; index < keys.length; index++) {
+        var temp = keys[index];
+        Object.prototype[temp] = methods[temp];
+    }
 };
+
+function isArray(object) {
+    return Object.getPrototypeOf(object) === Array.prototype;
+}
+function isObject(object) {
+    return Object.getPrototypeOf(object) === Object.prototype;
+}
+function isFunction(object) {
+    return Object.getPrototypeOf(object) === Function.prototype;
+}
+function isString(object) {
+    return Object.getPrototypeOf(object) === String.prototype;
+}
 
 var methods = {
     checkContainsKeys: function (keys) {
-        if (Object.getPrototypeOf(this) === Array.prototype ||
-        Object.getPrototypeOf(this) === Object.prototype) {
+        if (isArray(this) || isObject(this)) {
             var objectKeys = Object.keys(this);
             for (var item = 0; item < keys.length; item++) {
                 if (objectKeys.indexOf(keys[item]) < 0) {
@@ -34,8 +35,7 @@ var methods = {
     },
 
     checkHasKeys: function (keys) {
-        if (Object.getPrototypeOf(this) === Array.prototype ||
-        Object.getPrototypeOf(this) === Object.prototype) {
+        if (isArray(this) || isObject(this)) {
             var objectKeys = Object.keys(this);
             for (var item = 0; item < keys.length; item++) {
                 if (objectKeys.indexOf(keys[item]) < 0) {
@@ -47,8 +47,7 @@ var methods = {
     },
 
     checkContainsValues: function (values) {
-        if (Object.getPrototypeOf(this) === Array.prototype ||
-        Object.getPrototypeOf(this) === Object.prototype) {
+        if (isArray(this) || isObject(this)) {
             for (var index = 0; index < values.length; index++) {
                 if (this.indexOf(values[index]) === -1) {
                     return false;
@@ -59,8 +58,7 @@ var methods = {
     },
 
     checkHasValues: function (values) {
-        if (Object.getPrototypeOf(this) === Array.prototype ||
-        Object.getPrototypeOf(this) === Object.prototype) {
+        if (isArray(this) || isObject(this)) {
             var objectKeys = Object.keys(this);
             for (var item = 0; item < objectKeys.length; item++) {
                 if (values.indexOf(this[objectKeys[item]]) < 0) {
@@ -72,28 +70,26 @@ var methods = {
     },
 
     checkHasValueType: function (key, type) {
-        if (Object.getPrototypeOf(this) === Array.prototype ||
-        Object.getPrototypeOf(this) === Object.prototype) {
+        if (isArray(this) || isObject(this)) {
             var types = ['string', 'number', 'function', 'array'];
-            return (types.indexOf(typeof key) !== -1 && typeof key === typeof type());
+            return (types.indexOf(typeof type) !== -1 && typeof this[key] === typeof type());
         }
     },
 
     checkHasLength: function (length) {
-        if (Object.getPrototypeOf(this) === Array.prototype ||
-        Object.getPrototypeOf(this) === String.prototype) {
+        if (isArray(this) || isString(this)) {
             return this.length === length;
         }
     },
 
     checkHasParamsCount: function (count) {
-        if (Object.getPrototypeOf(this) === Function.prototype) {
+        if (isFunction(this)) {
             return this.length === count;
         }
     },
 
     checkHasWordsCount: function (count) {
-        if (Object.getPrototypeOf(this) === String.prototype) {
+        if (isString(this)) {
             var words = this.split(' ');
             return words.length === count;
         }
