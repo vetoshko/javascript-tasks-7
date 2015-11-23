@@ -48,8 +48,12 @@ var methods = {
 
     checkContainsValues: function (values) {
         if (isArray(this) || isObject(this)) {
-            for (var index = 0; index < values.length; index++) {
-                if (this.indexOf(values[index]) === -1) {
+            var objectKeys = Object.keys(this);
+            var objectValues = objectKeys.map(function (key) {
+                return this[key];
+            }.bind(this));
+            for (var item = 0; item < values.length; item++) {
+                if (objectValues.indexOf(values[item]) < 0) {
                     return false;
                 }
             }
